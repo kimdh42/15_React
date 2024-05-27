@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        #header {background-color: black; color: white; align-content: center; text-align: center; height: 30px; width: 100%;}
+        #main {display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: grey; height: 500px; width: 100%;}
+        #footer {background-color: black; color: white; align-content: center; text-align: center; height: 30px; width: 100%;}
+        #title {text-align: center;}
+        #todobox {background-color: white; width: 300px; height: 300px; border: 1px solid black;}
+        #inputBox {border: 1px solid black;}
+        #removeButton {border: 0; background: none;}
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+        
+    <script type="text/babel">
+
+        const {useState} = React;
+
+        function Todo() {
+            const [todos, setTodos] = useState([
+                {id: 1, schedule: '오늘 할일', checked: false}
+            ]);
+
+            const [inputText, setInputText] = useState('');
+            const [nextId, setNextId] = useState(2);
+
+            const onChangeHandler = e => setInputText(e.target.value);
+            const onClickHandler = () => {
+                const changedTodes = todos.concat({
+                    id: nextId,
+                    schedule: inputText,
+                    checked: false
+                });
+
+                setNextId(nextId + 1);
+                setTodos(changedTodes);
+                setInputText('');
+            }
+
+            
+            const onRemove = id => {
+                const changedTodos = todos.filter(todo => todo.id !== id);
+                setTodos(changedTodos);
+            }
+            
+            const onChecked = id => {
+                const changedTodes = todos.map(todo => todo.id === id ? {...todo, checked: !todo.checked } : todo);
+                setTodos(changedTodes);
+            }
+            
+            const todoList = todos.map(todo => (
+                <div key={todo.id}>
+                    <input type="checkbox" checked={todo.checked} onChange={() => onChecked(todo.id)}/>
+                    <span style={{textDecoration: todo.checked ? 'line-through': 'none'}}>
+                        {todo.schedule}
+                    </span>
+                    <button id="removeButton" onClick={() => onRemove(todo.id)}>❎</button>
+                </div>
+            ));
+
+            return (
+                <>
+                    <header id="header">오늘의 할일! 2024.05.27</header>
+                    <main id="main">
+                        <div id="title">ToDo-List</div>
+                        <div id="todobox">
+                            {todoList}
+                        </div>
+                        <div>
+                            <input id="inputBox" value={inputText} onChange={onChangeHandler}/>
+                            <button onClick={onClickHandler}>추가</button>
+                        </div>
+                    </main>
+                    <footer id="footer">Copyright 2022. team-greedy all nights reserved.</footer>
+                </>
+            )
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<Todo/>);
+    </script>
+
+</body>
+</html>
