@@ -38,9 +38,17 @@
             );
         }
 
+        /*
+        useEffect(func); -> mount, update
+        useEffect(func, []) -> mount
+        useEffect(func, [state] -> mount, update
+        useEffect(() => {return func})
+        */
+
         function App() {
 
             const [isTrue, setIsTrue] = useState(false);
+
             return (
                 <>
                     <button onClick={() => setIsTrue(!isTrue)}>타이머 토글</button>
