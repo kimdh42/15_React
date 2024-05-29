@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        /* 요청주소 : http://api.github.com/emojis 
+        useState, props, event, 비동기 통신 이용해서 입력 된 값과 일치하는 emoji를 img에 보여주고
+        일치하는 값이 없을 경우 img를 렌더링 하지 않는다.
+        */
+
+        const {useState} = React;
+
+        function SearchBox({setImgUrl}) {
+
+            const [emojiName, setEmojiName] = useState('');
+
+            const onChangeHandler = e => {
+
+                setEmojiName(e.target.value);
+            }
+
+            const onClickHandler = () => {
+
+                axios.get('http://api.github.com/emojis')
+                    .then(response => {
+                        setImgUrl(response.data[emojiName]);
+                        console.log('axios data : ', response.data);
+                    });
+            }
+
+            return (
+                <>
+                    <input 
+                        type="text" 
+                        name="emojiName" 
+                        onChange={onChangeHandler}
+                    />
+                    <button onClick={onClickHandler} >검색</button>
+                </>
+            );
+        }
+
+        function ImageBox({imgUrl}) {
+            return (
+                <img src={imgUrl} />
+            );
+        }
+
+        function App() {
+
+            const [imgUrl, setImgUrl] = useState('');
+
+            return (
+                <>
+                    <SearchBox setImgUrl={setImgUrl} />
+                    <br/>
+                    <ImageBox imgUrl={imgUrl} />
+                </>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+    </script>
+
+</body>
+</html>
