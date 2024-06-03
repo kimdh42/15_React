@@ -49,7 +49,7 @@
 
             useEffect(
                 () => {
-                    fetch('https://pokeapi.co/api/v2/pokemon')
+                    fetch('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0')
                         .then(response => response.json())
                         .then(responsePokemons => setPokemons(responsePokemons.results));
                 },
@@ -95,7 +95,7 @@
             return (
                 data &&
                 <div className="card">
-                    <img src={data.sprites.front_shiny}/>
+                    <img src={data.sprites.front_default}/>
                     <div className="info">
                         <h2>No. {data.id}</h2>
                         <h3>name : {data.name}</h3>
