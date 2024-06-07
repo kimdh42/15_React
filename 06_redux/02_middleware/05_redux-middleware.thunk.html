@@ -119,7 +119,7 @@
         // 'createStore' 함수에서 'thunkmiddleware'를 적용하여 스토어를 생성합니다.
         const store = createStore(reducer, applyMiddleware(thunkmiddleware));
 
-        /* 
+        /*
         Provider 컴포넌트로 store를 props로 전달하면 하위 컴포넌트는 store를 자동으로 구동하게 된다. 
         즉, state가 변경 되면 렌더링이 다시 일어난다.
         */
